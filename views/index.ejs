@@ -1,0 +1,21 @@
+<div class="container mt-5 text-center"></div>
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="jumbotron bg-light p-5 rounded">
+        <h1 class="display-4">Welcome to GIFler</h1>
+        <p class="lead mt-3">
+          Create stunning GIFs from your images with just a few clicks! GIFler is your one-stop tool for turning your photo sequences into smooth, high-quality GIF animations.
+        </p>
+        <hr class="my-4">
+        <div class="mt-5">
+          <!-- Check if the user is not logged in -->
+          <% if (!username) { %>
+            <a href="/auth/" class="btn btn-primary btn-lg px-5">Log In to Get Started</a>
+          <% } else { %>
+            <a href="/api/createGif" class="btn btn-success btn-lg px-5">Create a GIF</a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

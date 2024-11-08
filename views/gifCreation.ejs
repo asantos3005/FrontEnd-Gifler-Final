@@ -1,0 +1,128 @@
+<div class="container mt-5 text-center">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card p-4 shadow-lg">
+        <h2 class="card-title">Create Your GIF</h2>
+        <p class="card-text">
+          Upload a series of images to create your animated GIF.
+        </p>
+        <form action="/api/upload" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="callbackUrl" value="<%= callbackUrl %>">
+          <div class="form-group">
+            <label for="gifName">GIF Name:</label>
+            <input type="text" id="gifName" name="gifName" class="form-control" placeholder="Enter a name for your GIF">
+          </div>
+          <div class="form-group mt-4">
+            <label for="images">Select Images:</label>
+            <input type="file" id="images" name="images" class="form-control-file" multiple onchange="previewImages(event)">
+          </div>
+          
+          <!-- Dropdown to enable custom ordering -->
+          <div class="form-group mt-4">
+            <label for="customOrderToggle">Custom Order:</label>
+            <select id="customOrderToggle" class="form-control">
+              <option value="default">Default (Upload Order)</option>
+              <option value="custom">Custom Order</option>
+            </select>
+          </div>
+
+          <!-- Image reordering section, hidden by default -->
+          <div id="image-container" class="mt-4 row" style="display: none;">
+              <!-- Image preview area -->
+          </div>
+          <input type="hidden" name="order" id="order-input">
+          <button type="submit" class="btn btn-success btn-lg mt-4">Create GIF</button>
+          <button type="button" class="btn btn-danger btn-lg mt-4 ml-2" onclick="clearSelection()">Clear Selection</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentOrder = 1;
+  let selectedOrder = [];
+  const imageContainer = document.getElementById('image-container');
+
+  // Show or hide the reordering section based on dropdown selection
+  document.getElementById('customOrderToggle').addEventListener('change', function() {
+    if (this.value === 'custom') {
+      imageContainer.style.display = 'flex';
+    } else {
+      imageContainer.style.display = 'none';
+      clearSelection(); // Clear selection if user switches back to default
+    }
+  });
+
+  function previewImages(event) {
+    imageContainer.innerHTML = ''; // Clear the container
+    const files = event.target.files;
+
+    Array.from(files).forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imgElement = document.createElement('img');
+        imgElement.src = e.target.result;
+        imgElement.classList.add('img-thumbnail', 'col-md-3', 'mr-2', 'image-item');
+        imgElement.setAttribute('data-index', index);
+
+        const orderNumber = document.createElement('div');
+        orderNumber.classList.add('order-number');
+        orderNumber.style.position = 'absolute';
+        orderNumber.style.top = '10px';
+        orderNumber.style.left = '10px';
+        orderNumber.style.fontSize = '1.2rem';
+        orderNumber.style.color = 'white';
+        orderNumber.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+        orderNumber.style.padding = '5px';
+        orderNumber.style.borderRadius = '50%';
+
+        imgElement.addEventListener('click', function() {
+          if (!imgElement.classList.contains('selected')) {
+            imgElement.classList.add('selected');
+            orderNumber.textContent = currentOrder;
+            selectedOrder.push(index + 1);
+            currentOrder++;
+          }
+        });
+
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
+        wrapper.appendChild(imgElement);
+        wrapper.appendChild(orderNumber);
+
+        imageContainer.appendChild(wrapper);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function clearSelection() {
+    currentOrder = 1;
+    selectedOrder = []; // Reset the selected order array
+
+    document.querySelectorAll('.image-item').forEach(item => {
+      item.classList.remove('selected');
+      item.parentElement.querySelector('.order-number').textContent = '';
+    });
+  }
+
+  document.querySelector('form').addEventListener('submit', function(event) {
+    if (document.getElementById('customOrderToggle').value === 'custom') {
+      const totalFiles = event.target.images.files.length;
+      if (selectedOrder.length !== totalFiles) {
+        event.preventDefault();
+        alert('Please select all images in order.');
+      } else {
+        // Ensure that the selectedOrder array matches the visual order
+        selectedOrder = selectedOrder.slice(0, totalFiles);
+        document.getElementById('order-input').value = selectedOrder.join(',');
+      }
+    } else {
+      // Automatically assign the default order if custom order isn't used
+      selectedOrder = Array.from(Array(imageInput.files.length).keys()).map(i => i + 1);
+      document.getElementById('order-input').value = selectedOrder.join(',');
+    }
+  });
+</script>

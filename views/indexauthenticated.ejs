@@ -1,0 +1,69 @@
+<!--
+<div class="container mt-5 text-center"></div>
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="jumbotron bg-light p-5 rounded">
+        <h1 class="display-4">Welcome back <%= username %>!</h1>
+        <p class="lead mt-3">
+          Ready to create more stunning GIFs? Get started by clicking the button below!
+        </p>
+        <hr class="my-4">
+        <p>
+          We're excited to see what new GIFs you'll create today.
+        </p>
+        <div class="mt-2">
+          <a href="/api/createGif" class="btn btn-success btn-lg px-5">Create a GIF</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+
+<div class="container mt-5 text-center"></div>
+<div class="row justify-content-center">
+  <div class="col-md-10">
+    <div class="jumbotron bg-light p-5 rounded">
+      <h1 class="display-4">Welcome back <%= username %>!</h1>
+      <p class="lead mt-3">
+        Ready to create more stunning GIFs? Get started by clicking the button below!
+      </p>
+      <hr class="my-4">
+      <p>
+        We're excited to see what new GIFs you'll create today.
+      </p>
+      <div class="mt-2">
+        <a href="/api/createGif" class="btn btn-success btn-lg px-5">Create a GIF</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for error message -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered here -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="errorModalLabel">GIF Upload Error</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <%= errorMessage %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Check if errorMessage exists and show the modal -->
+<% if (errorMessage) { %>
+  <script>
+    // Use Bootstrap 5's modal JavaScript API to show the modal
+    document.addEventListener('DOMContentLoaded', function() {
+      var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+      errorModal.show();
+    });
+  </script>
+<% } %>

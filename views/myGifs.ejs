@@ -1,0 +1,46 @@
+<!--
+<div class="container mt-5">
+    <h2 class="text-center">My GIFs</h2>
+    <div class="row">
+        <% if (gifs.length === 0) { %>
+            <p class="text-center">You haven't created any GIFs yet.</p>
+        <% } else { %>
+            <% gifs.forEach(gif => { %>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="<%= gif.gif_path %>" width="500" height="500" alt="<%= gif.gif_name %>" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= gif.gif_name || 'Untitled' %></h5>
+                            <p class="card-text"><%= new Date(gif.created_at).toLocaleString() %></p>
+                            <a href="<%= gif.gif_path %>" class="btn btn-primary" download>Download</a>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        <% } %>
+    </div>
+</div>
+-->
+
+<div class="container mt-5">
+  <h2 class="text-center">My GIFs</h2>
+  <div class="row">
+    <% if (gifs.length === 0) { %>
+      <p class="text-center">You haven't created any GIFs yet.</p>
+    <% } else { %>
+      <% gifs.forEach(gif => { %>
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <!-- Display the GIF using the presigned URL or S3 path -->
+            <img src="<%= gif.gifFileUrl %>" alt="<%= gif.gif_name %>" class="card-img-top" />
+            <div class="card-body">
+              <h5 class="card-title"><%= gif.gif_name || 'Untitled' %></h5>
+              <p class="card-text">Created at: <%= new Date(gif.createdAt).toLocaleString() %></p> <!-- Use 'createdAt' -->
+              <a href="<%= gif.gifFileUrl %>" class="btn btn-primary" download>Download</a>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    <% } %>
+  </div>
+</div>

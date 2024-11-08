@@ -1,0 +1,14 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card p-4 shadow-lg">
+        <h2 class="card-title"><%= gifName %></h2>
+        <img src="<%= gifPath %>" alt="<%= gifName %>" class="img-fluid">
+        <p class="card-text mt-3">
+          <strong>Created by:</strong> <%= username %><br>
+          <strong>Created at:</strong> <%= new Date(createdAt).toLocaleString() %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

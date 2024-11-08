@@ -1,0 +1,6 @@
+.background{
+  background-image: url('../static/gifback.webp');
+  background-position: center;
+  background-size: cover;
+  overflow: hidden;
+}
