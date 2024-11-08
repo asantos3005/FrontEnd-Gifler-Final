@@ -5,15 +5,16 @@ const app = express();
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 const authRouter = require('./routes/auth');
-const cookieParser = require('cookie-parser'); // Require cookie-parser
+const cookieParser = require('cookie-parser'); 
 const jwt = require('jsonwebtoken');
-require('dotenv').config(); // This should be in your main application file, not in each service file
+require('dotenv').config();
 
 
 
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
 
 // Use express-ejs-layouts
 app.use(expressLayouts);

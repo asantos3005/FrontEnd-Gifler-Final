@@ -152,8 +152,8 @@ router.get('/mygifs', isAuthenticated, async (req, res) => {
     const decodedToken = jwt.decode(token);
     const useruniqueid = decodedToken['sub']; // Extract sub attribute to authenticate the user requesting the gif is the owner
 
-    console.log('Decoded token:', decodedToken); // Log the entire token to check the structure
-    console.log('Extracted useruniqueid:', useruniqueid); // Log the extracted user ID
+    //console.log('Decoded token:', decodedToken); // Log the entire token to check the structure
+    //console.log('Extracted useruniqueid:', useruniqueid); // Log the extracted user ID
 
     // Fetch all GIFs owned by the user
     const gifItems = await getAllUserOwnedGifs(useruniqueid);
@@ -182,7 +182,7 @@ router.get('/mygifs', isAuthenticated, async (req, res) => {
 
     // Render the My GIFs page with the GIFs data (both metadata and file URLs)
     res.render('myGifs', {
-      gifs: gifsData, // Pass the array of GIFs (with metadata and URLs) to the template
+      gifs: gifsData, 
     });
   } catch (error) {
     console.error('Error fetching user GIFs:', error);
@@ -193,7 +193,7 @@ router.get('/mygifs', isAuthenticated, async (req, res) => {
 // In routes/index.js or a similar routes file
 router.get('/loading', (req, res) => {
   const gifId = req.query.gifId; // Extract the gifId from query parameters if needed
-  console.log('Arrived at loading route');
+  //console.log('Arrived at loading route');
   res.render('loading', { title: 'Processing Your GIF', gifId });
 });
 
