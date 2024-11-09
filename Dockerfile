@@ -1,4 +1,4 @@
-# Use the official Node.js 18 image
+# Use an official Node.js runtime as a parent image
 FROM node:18
 
 # Install necessary dependencies, including curl
@@ -13,23 +13,26 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     && ./aws/install \
     && rm -rf awscliv2.zip ./aws
 
-# Create and set the working directory inside the container
-WORKDIR /usr/src/app
+# Set the working directory
+WORKDIR /app
 
-# Copy package.json and package-lock.json to install dependencies
-COPY package*.json ./
-
-# Install app dependencies
+# Install dependencies
 RUN npm install
 
-# Copy the rest of the application code into the container
+# Copy the application files
 COPY . .
 
-# Run createBucket.js during the container startup
-# RUN node createBucket.js
+# Create the ~/.aws directory and set up AWS credentials and region
+RUN mkdir -p /root/.aws && \
+    echo '[default]' > /root/.aws/credentials && \
+    echo 'aws_access_key_id=ASIA5DYSEEJ46R5RA5SF' >> /root/.aws/credentials && \
+    echo 'aws_secret_access_key=t8mlbKGlhdTFhz6baPm7ATBqzoQIxzUhVH2yMeBv' >> /root/.aws/credentials && \
+    echo 'aws_session_token=IQoJb3JpZ2luX2VjENP//////////wEaDmFwLXNvdXRoZWFzdC0yIkgwRgIhAIwYZn3ghMk9+DFc7U32NJKypst4oFzIMPNTiIz1xUhMAiEAuXf8/X6Ef1Q3GsnR0OBVx0xDzJjfKNkmhuYUbIaAydgqpQMIXBADGgw5MDE0NDQyODA5NTMiDLiCHHNT8UUvfcXobyqCA7kOFW6yhRKSvMF3QXxmd/zjCZlToOrtnIhClWuL7sdgBB0EejcSlWz4NHvwidcnQleJ2j2rFXVvcQeQ27qp9R3QUyAWPtjmhCFckx2VSGLKKbUr1jEx9iQStYKclin6PZ4vxNslh9PeXv6IzjUb6JS7T70Iy7bm5frJLy6hDSNjPWKipg3oZ5yGNfyG8ic4JFVqFQEzvhhcM3cTDKu8XhCehKU/LG5C/6gDJQXZDrqnhtDn3SqBQ1RTyNP2uQV/su3zdFt31KJnCMsvHrCHDTfvMgQih1CsxdmwraYl6a+QnladuJ7awji7d9TDkQ5q0YcMI9QbVfcc4Xvo73Xcwfp7onkoB+zUECEOljQ+igj/Rsi0N1lk8EknUXWhO37L76FEGPPenDG0FVBusEZAwbKcnC825O4r3mfLOFA211URqgh+Wy4WyuqmGuSIxjwuicGRerP5fAL4BSR+c09BaFCfsyu1qiJZY2unZPHZHyqbWAHvueX7DaCZbjXNnzSzMtbhMIvWt7kGOqUBOkWlCKmKCboj5ZfBDG3Y6ac7r0bIqUmYDZBjEIgos5sPlPCpHlM+wqcYg//YBTzRTms7JCsHQuSRchXw3rIz13b8Va5i10h61rXIXAW6uFlCOUjBqhjduD9fjnVAh4isIvbe2jvRAWVV5wQwJ5vg8BE4cN6nCNqE5vABQtuERUG3usEesd3vvSeT6ATCgiOrsYuxeEpIed6quG8Z4Uau9rIGB6lC' >> /root/.aws/credentials && \
+    echo '[default]' > /root/.aws/config && \
+    echo 'region=ap-southeast-2' >> /root/.aws/config
 
-# Expose the port on which your app will run
+# Expose the port the app runs on
 EXPOSE 3000
 
-# Command to run your Node.js app
+# Run the application
 CMD ["node", "GifApplicationIndex.js"]
